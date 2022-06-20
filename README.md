@@ -17,6 +17,14 @@
 
 ![](/img/Debian11_LXDE_032.png)
 
+## 開発環境用途
+
+> 主にWebシステム開発を想定しています  
+> 今後もインストール手順を追加予定です
+
+- Java関連
+- Node.js関連
+
 ## なぜDebianか？
 
 > 数多く存在する[Linuxディストリビューション](https://ja.wikipedia.org/wiki/Linux%E3%83%87%E3%82%A3%E3%82%B9%E3%83%88%E3%83%AA%E3%83%93%E3%83%A5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3)には、大きく  
@@ -28,7 +36,7 @@
 [Raspberry Pi OS](https://ja.wikipedia.org/wiki/Raspberry_Pi_OS)は、
 Debian系です。  
 > 
-> また、Debianが標準でサポートしているソフトは、[GNUプロジェクト](https://ja.wikipedia.org/wiki/GNU%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88)に則った、
+> また、Debianが標準でサポートしているソフトは、[GNUプロジェクト](https://ja.wikipedia.org/wiki/GNU%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88)に則った、  
 > 100%フリーソフトウェアのみです。  
 > しかもNon-Free パッケージも提供しており、Ubuntuとほぼ同じソフトが使えます。  
 > ライセンス契約は不要ですし、現行版のDebian11は、2026年までサポートされる予定です。  
@@ -68,7 +76,7 @@ Debian系です。
 ## Debianデスクトップ環境構築マニュアル
 
 > 標準のインストール用OSでは、無線LANが使えないことが多く、  
-> non-free の firmware 盤をダウンロードする
+> non-free の firmware 盤をダウンロードして下さい
 
 0. [non-free firmware ダウンロードサイト](https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/)
    - current/i386/iso-cd/firmware-11.3.0-i386-netinst.iso
@@ -78,30 +86,9 @@ Debian系です。
 3. [デスクトップ用途ソフトウェア](03.デスクトップソフト.md)
 4. [開発用途ソフトウェア](04.開発用ソフト.md)
 
-## Ubuntu と Debian の比較
+## その他
 
-> 知名度が高いのはUbuntuですが、開発用途で見ると不要ソフトが多数入ってますし、  
-> 開発に必要はソフトは、Debianで十分と思っています。  
-> Ubuntuは動作も遅いです。そこそこのスペックが要求されます。  
-
-## Raspberry Pi で、Debianとして使う
-
-> Raspberry Pi OS は、Debianです。プラットフォームはARMですが、ほぼx64と同様に使えます。
-> 私が家で使っている[Raspberry Pi](https://ja.wikipedia.org/wiki/Raspberry_Pi)は、  
-> 昨年、[1万5,000円くらいで買った](https://www.amazon.co.jp/gp/product/B0982VY8ZK/ref=ppx_od_dt_b_asin_title_s00?ie=UTF8&psc=1)のですが、普通にテスクトップ環境として使え、  
-> JavaやJavaScriptの開発の練習もできて、衝撃的でした。  
-> [Visual Studio Code](https://ja.wikipedia.org/wiki/Visual_Studio_Code) が、最初から用意されています。  
-> リモートワークする際のシンクライアントとしても使えます。  
-> 何と、[KVM](https://ja.wikipedia.org/wiki/Kernel-based_Virtual_Machine)での仮想化サーバーも構築できました。  
-
-## 古いパソコンを、Debianで再利用
-
-> Debianの良さは、軽量なこと。今でもx36マシンをサポートしています。  
-> 会社から貰った[古いDellのノートパソコン](https://www.dell.com/support/home/ja-jp/product-support/product/latitude-d510/overview)は、Debian 32bit OSをインストールして、  
-> 今でも子どもに使わせています。  
-> 多少遅いですが。。。
-
-
+- [Debian系ソフトの話](etc.md)
 
 
 
