@@ -68,6 +68,7 @@ Debian系です。
 >   - さくらエディタ（標準テキストエディタとVSCodeで代用可能）
 >   - TortoiseSVN、TortoiseGit（RabbitVCS で代用可能）
 >   - WinMerge（Meid で代用可能）
+>   - A5:SQL Mk-2（DBeaver で代用可能）
 >   - Eclipse、Pleiades（ある程度はVSCodeで代用可能）
 >   - Windows関連コマンド（Linuxシェルの方が皆知っている）
 >
