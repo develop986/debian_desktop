@@ -65,8 +65,8 @@ Debian系です。
 > - Windowsとの操作感が違う（慣れが必要）
 > - Excel等のOfficeが使えない（LibreOfficeやWeb版Exel等で代用？）
 > - 使い慣れているソフトが使えない
->   - さくらエディタ（ある程度はVSCodeで代用可能）
->   - TortoiseSVN、TortoiseGit（コミット操作などはVSCodeで可能）
+>   - さくらエディタ（ある程度は標準テキストエディタとVSCodeで代用可能）
+>   - TortoiseSVN、TortoiseGit（RabbitVCS で代用可能）
 >   - Eclipse、Pleiades（ある程度はVSCodeで代用可能）
 >   - Windows関連コマンド（Linuxシェルの方が皆知っている）
 >
