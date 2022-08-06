@@ -1,7 +1,6 @@
 FROM debian:latest
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:1
 
 RUN apt-get update \
   && apt-get -y install vim task-japanese locales-all \
@@ -12,20 +11,10 @@ RUN apt-get update \
   supervisor \
   task-japanese-desktop \
   tzdata \
-  sudo \
-  jwm \
-  lxterminal \
   fonts-ipafont \
   fonts-ipafont-gothic \
   fonts-ipafont-mincho \
-  dbus-x11 \
   fcitx-mozc \
-  fcitx-imlist \
-  vim-gtk3 \
-  libcurl4 \
-  epiphany-browser \
-  curl \
-  feh \
   && echo '[supervisord]' >> /etc/supervisor/conf.d/sv.conf \
   && echo 'nodaemon=true' >> /etc/supervisor/conf.d/sv.conf \
   && echo '[program:xrdp-sesman]' >> /etc/supervisor/conf.d/sv.conf \
@@ -46,7 +35,6 @@ RUN apt-get update \
   && apt-get clean && apt-get autoremove \
   && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
 
-# タイムゾーン
 ENV TZ=Asia/Tokyo
 
 CMD ["bash", "-c", "/usr/bin/supervisord -c /etc/supervisor/supervisord.conf"]
