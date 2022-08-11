@@ -15,6 +15,10 @@ RUN apt-get update \
   fonts-ipafont-gothic \
   fonts-ipafont-mincho \
   fcitx-mozc \
+  iproute2 \
+  iputils-ping \
+  net-tools \
+  dnsutils \
   && echo '[supervisord]' >> /etc/supervisor/conf.d/sv.conf \
   && echo 'nodaemon=true' >> /etc/supervisor/conf.d/sv.conf \
   && echo '[program:xrdp-sesman]' >> /etc/supervisor/conf.d/sv.conf \
