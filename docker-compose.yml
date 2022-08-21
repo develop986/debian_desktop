@@ -1,0 +1,11 @@
+services:
+  debian:
+    build: ./
+    container_name: debian-desktop
+    restart: always
+    environment:
+      TZ: Asia/Tokyo
+    ports:
+      - 3389:3389
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
