@@ -1,8 +1,48 @@
-## Dockerfileでデスクトップ環境を作る
+## Dockerでデスクトップ環境を作る
 
 [DockerでDebian 11(Bullseye)のLXDEデスクトップ環境にリモートデスクトップで接続できるコンテナを作成する](http://serverarekore.blogspot.com/2022/02/dockerdebian-11bullseyelxde.html)
 
-> 先に[Dockerfile](Dockerfile)のkuhara欄を、変更したいユーザー名とパスワードに変更する
+> 先に[Dockerfile](Dockerfile)の`debian`欄を、変更したいユーザー名とパスワードに変更する
+
+### Debianデスクトップ環境構築
+
+```
+ネットワーク環境によるが、30分くらい掛かる
+$ docker compose up -d
+```
+
+### DockerでDebianデスクトップ環境構築（VPSでの作業）
+
+> - [Dockerインストール](https://github.com/develop986/ubuntu_server/blob/main/02.Docker.md) 
+> - let's encrypt での SSL取得  
+> まで終わらせておくこと
+
+```
+$ sudo su -
+# git clone https://github.com/develop986/debian_desktop
+# cd debian_desktop
+# git pull
+# docker compose up -d
+```
+
+### 動作確認
+
+```
+# sudo docker exec -it debian-desktop bin/bash
+
+リモートデスクトップに以下で接続
+mysv986.com
+```
+
+### 削除する場合
+
+```
+# docker compose down -v
+# docker image rm -f debian_desktop_debian
+```
+
+### その他、以下コマンド集
+
 
 ```
 １時間は掛かるので覚悟して実行する
@@ -92,33 +132,3 @@ $ docker run -itd --name testdebian-2 --tmpfs /app debian11lxde
 $ docker rm -f testdebian-1
 $ docker rm -f testdebian-2
 ```
-
-### DockerでDebianデスクトップ環境構築（VPSでの作業）
-
-> - [Dockerインストール](https://github.com/develop986/ubuntu_server/blob/main/02.Docker.md) 
-> - let's encrypt での SSL取得  
-> まで終わらせておくこと
-
-```
-$ sudo su -
-# git clone https://github.com/develop986/debian_desktop
-# cd debian_desktop
-# git pull
-# docker compose up -d
-```
-
-### 動作確認
-
-```
-# sudo docker exec -it debian-desktop bin/bash
-
-リモートデスクトップに以下で接続
-mysv986.com
-```
-
-### 削除する場合
-
-```
-# docker compose down -v
-# docker image rm -f debian_desktop_debian
-'''
