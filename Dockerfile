@@ -3,7 +3,7 @@ FROM debian:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-  && apt-get -y install vim task-japanese locales-all \
+  && apt-get -y install vim less task-japanese locales-all \
   && echo 'LC_ALL=ja_JP.UTF-8' > /etc/default/locale \
   && echo 'LANG=ja_JP.UTF-8' >> /etc/default/locale \
   && apt install -y task-lxde-desktop \
@@ -19,6 +19,8 @@ RUN apt-get update \
   iputils-ping \
   net-tools \
   dnsutils \
+  && sed -i -e "s|certificate=|certificate=/etc/letsencrypt/live/nodeexpressmongo.mysv986.com/cert.pem|g" /etc/xrdp/xrdp.ini \
+  && sed -i -e "s|key_file=|key_file=/etc/letsencrypt/live/nodeexpressmongo.mysv986.com/privkey.pem|g" /etc/xrdp/xrdp.ini \
   && echo '[supervisord]' >> /etc/supervisor/conf.d/sv.conf \
   && echo 'nodaemon=true' >> /etc/supervisor/conf.d/sv.conf \
   && echo '[program:xrdp-sesman]' >> /etc/supervisor/conf.d/sv.conf \
