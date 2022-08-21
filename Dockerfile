@@ -22,7 +22,7 @@ RUN apt update \
   zip unzip \
   curl \
   fonts-noto-cjk fonts-noto-cjk-extra \
-  apt install rabbitvcs-nautilus \
+  rabbitvcs-nautilus \
   gimp-plugin-registry gmic gimp-gmic inkscape dia \
   git \
   && curl -fsSL https://dbeaver.io/debs/dbeaver.gpg.key | apt-key add - \
