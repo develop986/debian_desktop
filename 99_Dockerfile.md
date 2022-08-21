@@ -120,5 +120,5 @@ mysv986.com
 
 ```
 # docker compose down -v
-# docker image rm -f debian11lxde
+# docker image rm -f debian_desktop_debian
 '''
