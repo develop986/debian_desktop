@@ -81,7 +81,10 @@ Debian系です。
    - https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.4.0-amd64-netinst.iso
    - https://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-12.4.0-i386-netinst.iso
 1. [VirtualBox 仮想PC作成](01_VirtualBox.md)
-2. [Debian11インストール](02_Debian11インストール.md)
+2. Debianインストール
+   - [Debian11インストール](02_Debian11インストール.md)
+   - [Debian11最小GUT環境構築](02_Debian11最小GUT環境構築.md)
+   - [IndigoでのDebian12インストール](02_IndigoでのDebian12インストール.md)
 3. [デスクトップ用途ソフトウェア](03_デスクトップソフト.md)
 4. [開発用途ソフトウェア](04_開発用ソフト.md)
 5. [仮想化関連ソフトウェア](05_仮想化ソフト.md)
