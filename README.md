@@ -77,12 +77,9 @@ Debian系です。
 
 ## Debianデスクトップ環境構築マニュアル
 
-> 標準のインストール用OSでは、無線LANが使えないことが多く、  
-> non-free の firmware 盤をダウンロードして下さい
-
-0. [non-free firmware ダウンロードサイト](https://cdimage.debian.org/cdimage/unofficial/non-free/cd-including-firmware/)
-   - current/i386/iso-cd/firmware-11.3.0-i386-netinst.iso
-   - current/amd64/iso-cd/firmware-11.3.0-amd64-netinst.iso
+0. [Downloading Debian](https://www.debian.org/download)
+   - https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.4.0-amd64-netinst.iso
+   - https://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-12.4.0-i386-netinst.iso
 1. [VirtualBox 仮想PC作成](01_VirtualBox.md)
 2. [Debian11インストール](02_Debian11インストール.md)
 3. [デスクトップ用途ソフトウェア](03_デスクトップソフト.md)
