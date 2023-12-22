@@ -14,7 +14,7 @@
 
 # 日本時間、ロケール設定
 
-  timedatectl set-timezone Asia/Tokyo $$ timedatectl status
+  timedatectl set-timezone Asia/Tokyo && timedatectl status
   apt -y install task-japanese locales-all
   localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
   source /etc/default/locale 
