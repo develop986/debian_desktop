@@ -32,10 +32,10 @@
 
   read str
 
-  if [ $str =　"" ]; then
+  if [ "$str" = "" ]; then
     echo "ホスト名の変更はしませんでした。"
   else
-    hostnamectl set-hostname $str
+    hostnamectl set-hostname "$str"
   fi
 
 
@@ -45,8 +45,8 @@
 
   read str
 
-  if [[ $str =~ ^[0-9]+$ ]]; then
-    dd if=/dev/zero of=/swapfile bs=1M count=$str
+  if [[ "$str" =~ ^[0-9]+$ ]]; then
+    dd if=/dev/zero of=/swapfile bs=1M count="$str"
     chmod 600 /swapfile
     mkswap /swapfile
     swapon /swapfile
@@ -62,12 +62,12 @@
 
   read str
 
-  if [[ $str =~ ^[a-z]+$ ]]; then
-　　adduser $str
-　　echo "$str　ALL=(ALL)　NOPASSWD:　ALL" > /etc/sudoers.d/$str
+  if [[ "$str" =~ ^[a-z]+$ ]]; then
+　　adduser "$str"
+　　echo "$str　ALL=(ALL)　NOPASSWD:　ALL" > /etc/sudoers.d/"$str"
   else
-    echo "ユーザーの登録はしませんでした。"
     $str $USER
+    echo "ユーザーの登録はしませんでしたので$strで処理を進めます。"
   fi
 
 
@@ -103,8 +103,8 @@
   update-alternatives --set editor /usr/bin/vim.tiny
   update-alternatives --set x-terminal-emulator /usr/bin/lxterminal
 
-  su - $str -c 'git config --global user.email "kuhataku@gmail.com"'
-  su - $str -c 'git config --global user.name "kuhataku"'
+  su - "$str" -c 'git config --global user.email "kuhataku@gmail.com"'
+  su - "$str" -c 'git config --global user.name "kuhataku"'
 
 exit 0
 
