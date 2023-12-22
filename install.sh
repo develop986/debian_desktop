@@ -63,7 +63,7 @@
   read str
 
   if [[ "$str" =~ ^[a-z]+$ ]]; then
-　　adduser "$str"
+　　/usr/sbin/adduser "$str"
 　　echo "$str　ALL=(ALL)　NOPASSWD:　ALL" > /etc/sudoers.d/"$str"
   else
     $str $USER
