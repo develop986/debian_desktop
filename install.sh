@@ -4,7 +4,7 @@
 
   read str
 
-  if [[ $str =~ ^[yY]$ ]]; then
+  if [[ "$str" =~ ^[yY]$ ]]; then
     echo "定番ソフトをインストールします。"
   else
     echo "定番ソフトをインストールしませんでした。"
