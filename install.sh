@@ -78,7 +78,7 @@
   tasksel
 
   apt -y install zip unzip curl
-  apt -y install git  etckeeper
+  apt -y install git etckeeper
   apt -y install rabbitvcs-core
   apt -y install fonts-noto-cjk fonts-noto-cjk-extra
   apt -y install gimp-plugin-registry gmic gimp-gmic inkscape diasudo
@@ -94,6 +94,12 @@
   wget https://packages.microsoft.com/repos/edge/pool/main/m/microsoft-edge-stable/microsoft-edge-stable_120.0.2210.91-1_amd64.deb
   apt -y install ./microsoft-edge-stable_*_amd64.deb
 
+  curl -L https://go.microsoft.com/fwlink/?LinkID=760868 -o vscode.deb
+  apt -y install ./vscode.deb
+
+  wget https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb
+  apt -y install ./dbeaver-ce_latest_amd64.deb
+
 
 # 後処理
 
@@ -105,6 +111,20 @@
 
   su - "$str" -c 'git config --global user.email "kuhataku@gmail.com"'
   su - "$str" -c 'git config --global user.name "kuhataku"'
+
+# 再起動確認
+
+  echo "再起動確認しますか？[Y/n]"
+
+  read str
+
+  if [[ "$str" =~ ^[yY]$ ]]; then
+    echo "再起動確認します。"
+    reboot
+  else
+    echo "再起動確認しませんでした。"
+    exit 0
+  fi
 
 exit 0
 
