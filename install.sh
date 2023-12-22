@@ -75,7 +75,18 @@
 
   apt update && apt -y full-upgrade
 
-  tasksel
+  echo "GUIを選択して下さい（その他の場合は登録なし）"
+  echo "1：LXDE"
+  echo "2：GNOME"
+  echo "3：MATE"
+
+  read str
+
+  case "$str" in
+    "1" ) apt -y install task-lxde-desktop ;;
+    "2" ) apt -y install task-gnome-desktop ;;
+    "3" ) apt -y install task-mate-desktop  ;;
+  esac
 
   apt -y install zip unzip curl
   apt -y install git etckeeper
