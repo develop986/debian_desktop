@@ -91,6 +91,12 @@ Debian系です。
 6. [操作と設定](06_操作と設定.md)
 7. [Dockerでデスクトップ環境を作る](07_Dockerでデスクトップ環境を作る.md)
 
+## bashによる自動設定
+
+```
+$ wget https://raw.githubusercontent.com/develop986/debian_desktop/main/setting.sh && sudo bash setting.sh && rm setting.sh
+```
+
 ## その他
 
 - [Debian系ソフトの話](etc.md)
