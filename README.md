@@ -94,7 +94,7 @@ Debian系です。
 ## bashによる自動設定
 
 ```
-$ wget https://raw.githubusercontent.com/develop986/debian_desktop/main/setting.sh && sudo bash setting.sh && rm setting.sh
+$ wget https://raw.githubusercontent.com/develop986/debian_desktop/main/setting.sh && sudo bash setting.sh
 ```
 
 ## その他

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # セットアップ作業開始確認
-  echo 'Do you want to start the setup process? [Y/n]'
+  echo 'Do you want to start the SETUP process? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     echo 'Start the setup process.'
@@ -11,7 +11,7 @@
   fi
 
 # パッケージの最新化
-  echo 'Would you like to update your packages? [Y/n]'
+  echo 'Would you like to UPDATE your packages? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     apt update && apt -y full-upgrade
@@ -23,7 +23,7 @@
 
 # 日本時間設定
 
-  echo 'Do you want to set Japan time? [Y/n]'
+  echo 'Do you want to set JAPAN TIME? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     timedatectl set-timezone Asia/Tokyo
@@ -36,7 +36,7 @@
   fi
 
 # 日本語ロケール設定
-  echo 'Would you like to set the Japanese locale? [Y/n]'
+  echo 'Would you like to set the JAPANESE LOCALE? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     apt -y install task-japanese locales-all
@@ -49,7 +49,7 @@
   fi
 
 # APT自動アップデート設定
-  echo 'Would you like to configure automatic APT update settings? [Y/n]'
+  echo 'Would you like to configure automatic APT UPDATE settings? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     apt -y install unattended-upgrades apt-listchanges
@@ -63,7 +63,7 @@
   fi
 
 # ホスト名変更
-  echo 'Do you want to change the host name? (If not entered, it will not be implemented)'
+  echo 'Do you want to change the HOSTNAME? (If not entered, it will not be implemented)'
   read str
   if [ "$str" = "" ]; then
     echo 'I skipped setting the hostname.'
@@ -73,7 +73,7 @@
   fi
 
 # スワップ領域作成
-  echo 'Please enter the swap area to be created in mega value (it will not be created if not entered)'
+  echo 'Please enter the SWAP area to be created in MEGA value (it will not be created if not entered)'
   read str
   if [[ "$str" =~ ^[0-9]+$ ]]; then
     dd if=/dev/zero of=/swapfile bs=1M count="$str"
@@ -103,7 +103,7 @@
   fi
 
 # GUIデスクトップのインストール
-  echo 'Select the GUI desktop to install. (Otherwise skip installation)'
+  echo 'Select the GUI DESKTOP to install. (Otherwise skip installation)'
   echo '1: LXDE'
   echo '2: GNOME'
   echo '3: MATE'
@@ -160,23 +160,27 @@
 # 開発環境のインストール
   while :
   do
-    echo 'Please select the development environment to install.'
-    echo '11：PG JAVA OpenJDK'
-    echo '12：PG JAVA Maven'
-    echo '13：PG JAVA Gradle'
-    echo '14：PG NodeJS'
-    echo '31：DB PostgreSQL'
-    echo '32：DB MySQL'
-    echo '33：DB MariaDB'
-    echo '34：DB SQLite3'
-    echo '35：DB MongoDB'
+    echo 'Please select the DEVELOPMENT environment to install.'
+    echo 'P1：PG JAVA OpenJDK  ('`which javac`')'
+    echo 'P2：PG JAVA Maven  ('`which maven`')'
+    echo 'P3：PG JAVA Gradle  ('`which gradle`')'
+    echo 'P4：PG NodeJS  ('`which node`')'
+    echo 'D1：DB PostgreSQL  ('`which psql`')'
+    echo 'D2：DB MySQL  ('`which mysql`')'
+    echo 'D3：DB MariaDB  ('`which mysql`')'
+    echo 'D4：DB SQLite3  ('`which sqlite3`')'
+    echo 'D5：DB MongoDB  ('`which mongo`')'
+    echo 'I1：IDE Eclipse'
+    echo 'I2：IDE Android Studio'
+    echo 'V1：VM KVM  ('`lsmod | grep kvm | head -1`')'
+    echo 'V2：VM Docker Engine  ('`which docker`')'
     echo 'q：Exit'
     read str
     if [ "$str" = "q" ]; then
       break
     else
       case "$str" in
-        "11" )
+        "P1" )
           apt -y install default-jdk
           echo 'export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")' >> /etc/bash.bashrc
           echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/bash.bashrc
@@ -185,12 +189,12 @@
           javac -version
           echo 'I have installed JAVA OpenJDK.'
           ;;
-        "12" )
+        "P2" )
           apt -y install maven
           maven -version
           echo 'I have installed JAVA Maven.'
           ;;
-        "13" )
+        "P3" )
           # 最新版が必要な場合は事前に変更しておくこと 
           wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
           mkdir /opt/gradle
@@ -200,47 +204,49 @@
           gradle -v
           echo 'I have installed JAVA Gradle.'
           ;;
-        "14" )
+        "P4" )
           curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
           apt -y install nodejs
           node -v
           npm -v
           echo 'I have installed NodeJS.'
           ;;
-        "31" )
+        "D1" )
           apt -y install postgresql
+          psql --version
           echo 'I have installed PostgreSQL.'
           echo 'https://www.server-world.info/query?os=Debian_12&p=postgresql'
           ;;
-        "32" )
+        "D2" )
           # 最新版が必要な場合は事前に変更しておくこと 
           wget https://dev.mysql.com/get/mysql-apt-config_0.8.29-1_all.deb
           apt -y install ./mysql-apt-config_*.deb
           apt update
           apt -y install mysql-server
-          dpkg-reconfigure mysql-apt-config
-          apt update
           apt -y install mysql-workbench libmysqlclient21
           rm -r /var/lib/mysql/*
           mysqld --initialize-insecure --user=mysql
           echo 'bind-address=127.0.0.1' > /var/lib/mysql/my.ini 
           systemctl restart mysql
           systemctl status mysql
+          mysql --version
           echo 'I have installed MySQL.'
           echo 'https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/'
           ;;
-        "33" )
+        "D3" )
           apt -y install mariadb-server 
           mysql_secure_installation 
+          mysql --version
           echo 'I have installed MariaDB.'
           echo 'https://www.server-world.info/query?os=Debian_12&p=mariadb&f=1'
           ;;
-        "34" )
+        "D4" )
           apt -y install sqlite3
           sqlite3 -version
           echo 'I have installed SQLite3.'
           echo 'https://qiita.com/Nats72/items/4a420d7a54a0f67aa0cd'
-        "35" )
+          ;;
+        "D5" )
           # 最新版が必要な場合は事前に変更しておくこと 
           apt -y install gnupg curl
           curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
@@ -251,8 +257,51 @@
           apt -y install mongodb-org
           wget https://downloads.mongodb.com/compass/mongodb-compass_1.41.0_amd64.deb
           apt -y install ./mongodb-compass_*_amd64.deb
+          mongo -version
           echo 'I have installed MongoDB.'
           echo 'https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/'
+          ;;
+        "I1" )
+          # 最新版が必要な場合は事前に変更しておくこと 
+          wget https://mirror.kakao.com/eclipse/oomph/epp/2023-12/R/eclipse-inst-jre-linux64.tar.gz
+          tar -xvf eclipse-inst-jre-linux64.tar.gz 
+          ./eclipse-installer/eclipse-inst
+          cd
+          echo 'I have installed Eclipse.'
+          echo 'https://www.eclipse.org/downloads/packages/installer'
+          echo 'If you need to configure PLEIADES, please refer to the following.'
+          echo 'https://willbrains.jp/'
+          ;;
+        "I2" )
+          # 最新版が必要な場合は事前に変更しておくこと 
+          wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.21/android-studio-2022.3.1.21-linux.tar.gz
+          tar -xvf android-studio-*-linux.tar.gz
+          sh ./android-studio/bin/studio.sh
+          echo 'I have installed Android Studio.'
+          echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
+          ;;
+        "V1" )
+          apt -y install qemu-kvm libvirt-daemon-system libvirt-daemon virtinst bridge-utils libosinfo-bin
+          apt -y install virt-manager qemu-system
+          lsmod | grep kvm 
+          echo 'I have installed KVM.'
+          echo 'https://www.server-world.info/query?os=Debian_12&p=kvm'
+          ;;
+        "V2" )
+          apt -y install ca-certificates curl gnupg
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+          chmod a+r /etc/apt/keyrings/docker.gpg
+          echo \
+            "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+            $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+            tee /etc/apt/sources.list.d/docker.list > /dev/null
+          apt update
+          apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+          groupadd docker
+          docker run hello-world
+          echo 'I have installed Docker Engine.'
+          echo 'https://docs.docker.com/engine/install/debian/'
           ;;
       esac
     fi
@@ -260,13 +309,14 @@
 
 
 # ユーザー追加
-  echo 'Please enter the account name of the user to be created. (Does not create if empty)'
+  echo 'Please enter the account name of the USER to be created. (Does not create if empty)'
   read str
   if [[ "$str" =~ ^[a-z]+$ ]]; then
     adduser "$str"
     echo "$str ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/"$str"
     su - "$str" -c 'git config --global user.email "kuhataku@gmail.com"'
     su - "$str" -c 'git config --global user.name "kuhataku"'
+    usermod -aG docker "$str"
     echo 'Created a user.'
     Created a user.
   else
@@ -274,7 +324,7 @@
   fi
 
 # 再起動確認
-  echo 'Do you want to reboot at the end? [Y/n]'
+  echo 'Do you want to REBOOT at the end? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
     echo 'Perform a reboot.'
