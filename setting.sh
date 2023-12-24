@@ -132,7 +132,7 @@
   if [[ "$str" =~ ^[yY]$ ]]; then
     # rabbitvcs-nautilus は現在unstableであるため、インストール不可
     # apt -y install rabbitvcs-core rabbitvcs-nautilus rabbitvcs-thunar rabbitvcs-gedit rabbitvcs-cli
-    apt -y install gimp-plugin-registry gmic gimp-gmic inkscape diasudo
+    apt -y install gimp-plugin-registry gmic gimp-gmic inkscape dia
     apt -y install remmina 
 
     apt -y install xrdp tigervnc-standalone-server
