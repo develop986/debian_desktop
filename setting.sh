@@ -111,12 +111,9 @@
   case "$str" in
     "1" )
       echo 'If communication is interrupted, REBOOT.'
-      apt -y install task-lxde-desktop
-      # 何故かネットワークが切れるので、connmanを非活性にする
-      systemctl stop connman.service 
-      systemctl disable connman.service
-      systemctl disable connman-wait-online.service 
-      # 日本語入力ソフトのインストールが必要かも
+      apt -y install task-lxde-desktop fcitx-mozc \
+        systemctl restart connman.service
+      # 何故かネットワークが切れるので、connmanを再起動する
       echo 'I installed LXDE.'
       ;;
     "2" )
@@ -259,14 +256,15 @@
           # 最新版が必要な場合は事前に変更しておくこと 
           apt -y install gnupg curl
           curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
-            gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
-          echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/7.0 main" | \
+            gpg -o /etc/apt/trusted.gpg.d/mongodb-server-7.0.gpg --dearmor
+          echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
             tee /etc/apt/sources.list.d/mongodb-org-7.0.list
           apt update
           apt -y install mongodb-org
           mongod -version
           echo 'I have installed MongoDB.'
           echo 'https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/'
+          echo 'https://medium.com/@arun0808rana/mongodb-installation-on-debian-12-8001d0dafb56'
           ;;
         "I1" )
           # 最新版が必要な場合は事前に変更しておくこと 
@@ -291,7 +289,7 @@
           echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
           ;;
         "V1" )
-          $vm = `cat /proc/cpuinfo | grep -e vmx -e svm | wc -l`
+          vm=`cat /proc/cpuinfo | grep -e vmx -e svm | wc -l`
           echo "VM Count $vm"
           if [ "$vm" -gt 0 ]; then
             echo 'KVM cannot be installed because the CPU does not support virtualization.'
@@ -313,7 +311,6 @@
             tee /etc/apt/sources.list.d/docker.list > /dev/null
           apt update
           apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-          groupadd docker
           docker run hello-world
           echo 'I have installed Docker Engine.'
           echo 'https://docs.docker.com/engine/install/debian/'
