@@ -111,9 +111,9 @@
   case "$str" in
     "1" )
       echo 'If communication is interrupted, REBOOT.'
-      apt -y install task-lxde-desktop fcitx-mozc
-      systemctl restart connman.service
-      # 何故かネットワークが切れるので、connmanを再起動する
+      apt -y install task-lxde-desktop fcitx-mozc && \
+        systemctl restart connman.service
+      # 何故かネットワークが切れるのでconnmanを再起動する
       echo 'I installed LXDE.'
       ;;
     "2" )
@@ -190,6 +190,7 @@
           apt -y install default-jdk
           echo 'export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")' >> /etc/bash.bashrc
           echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/bash.bashrc
+          echo 'export CLASSPATH=.:$JAVA_HOME/lib/' >> /etc/bash.bashrc 
           source /etc/bash.bashrc
           java -version
           javac -version
@@ -292,11 +293,11 @@
           vm=`cat /proc/cpuinfo | grep -e vmx -e svm | wc -l`
           echo "VM Count $vm"
           if [ "$vm" -gt 0 ]; then
-            echo 'KVM cannot be installed because the CPU does not support virtualization.'
-          else
             apt -y install qemu-kvm libvirt-daemon-system libvirt-daemon virtinst bridge-utils libosinfo-bin
             lsmod | grep kvm
             echo 'I have installed KVM.'
+          else
+            echo 'KVM cannot be installed because the CPU does not support virtualization.'
           fi
           echo 'https://www.server-world.info/query?os=Debian_12&p=kvm'
           ;;
