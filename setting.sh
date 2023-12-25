@@ -111,8 +111,8 @@
   case "$str" in
     "1" )
       echo 'If communication is interrupted, REBOOT.'
-      apt -y install task-lxde-desktop fcitx-mozc \
-        systemctl restart connman.service
+      apt -y install task-lxde-desktop fcitx-mozc
+      systemctl restart connman.service
       # 何故かネットワークが切れるので、connmanを再起動する
       echo 'I installed LXDE.'
       ;;
