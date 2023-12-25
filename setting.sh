@@ -110,7 +110,13 @@
   read str
   case "$str" in
     "1" )
+      echo 'If communication is interrupted, REBOOT.'
       apt -y install task-lxde-desktop
+      # 何故かネットワークが切れるので、connmanを非活性にする
+      systemctl stop connman.service 
+      systemctl disable connman.service
+      systemctl disable connman-wait-online.service 
+      # 日本語入力ソフトのインストールが必要かも
       echo 'I installed LXDE.'
       ;;
     "2" )
@@ -162,18 +168,21 @@
   do
     echo 'Please select the DEVELOPMENT environment to install.'
     echo 'P1：PG JAVA OpenJDK  ('`which javac`')'
-    echo 'P2：PG JAVA Maven  ('`which maven`')'
+    echo 'P2：PG JAVA Maven  ('`which mvn`')'
     echo 'P3：PG JAVA Gradle  ('`which gradle`')'
     echo 'P4：PG NodeJS  ('`which node`')'
     echo 'D1：DB PostgreSQL  ('`which psql`')'
     echo 'D2：DB MySQL  ('`which mysql`')'
     echo 'D3：DB MariaDB  ('`which mysql`')'
     echo 'D4：DB SQLite3  ('`which sqlite3`')'
-    echo 'D5：DB MongoDB  ('`which mongo`')'
-    echo 'I1：IDE Eclipse'
-    echo 'I2：IDE Android Studio'
+    echo 'D5：DB MongoDB  ('`which mongod`')'
+    echo 'I1：IDE(GUI) Eclipse'
+    echo 'I2：IDE(GUI) Android Studio'
     echo 'V1：VM KVM  ('`lsmod | grep kvm | head -1`')'
     echo 'V2：VM Docker Engine  ('`which docker`')'
+    echo 'T1: TOOL(GUI) MySQL Workbench'
+    echo 'T2: TOOL(GUI) MongoDB Compass'
+    echo 'T3: TOOL(GUI) Virtual Machine Manager'
     echo 'q：Exit'
     read str
     if [ "$str" = "q" ]; then
@@ -191,25 +200,26 @@
           ;;
         "P2" )
           apt -y install maven
-          maven -version
+          mvn -v
           echo 'I have installed JAVA Maven.'
+          echo 'https://www.linuxcapable.com/how-to-install-apache-maven-on-debian-linux/'
           ;;
         "P3" )
           # 最新版が必要な場合は事前に変更しておくこと 
           wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
           mkdir /opt/gradle
           unzip -d /opt/gradle ./gradle-8.5-bin.zip
-          echo 'export PATH=$PATH:/opt/gradle/gradle-8.5/bin' > /etc/profile.d/gradle.sh
-          source /etc/profile.d/gradle.sh
+          echo 'export PATH=$PATH:/opt/gradle/gradle-8.5/bin' >> /etc/bash.bashrc
+          source /etc/bash.bashrc
           gradle -v
           echo 'I have installed JAVA Gradle.'
           ;;
         "P4" )
-          curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-          apt -y install nodejs
+          apt -y install nodejs npm 
           node -v
           npm -v
           echo 'I have installed NodeJS.'
+          echo 'https://www.server-world.info/query?os=Debian_12&p=nodejs&f=1'
           ;;
         "D1" )
           apt -y install postgresql
@@ -223,7 +233,6 @@
           apt -y install ./mysql-apt-config_*.deb
           apt update
           apt -y install mysql-server
-          apt -y install mysql-workbench libmysqlclient21
           rm -r /var/lib/mysql/*
           mysqld --initialize-insecure --user=mysql
           echo 'bind-address=127.0.0.1' > /var/lib/mysql/my.ini 
@@ -255,9 +264,7 @@
             tee /etc/apt/sources.list.d/mongodb-org-7.0.list
           apt update
           apt -y install mongodb-org
-          wget https://downloads.mongodb.com/compass/mongodb-compass_1.41.0_amd64.deb
-          apt -y install ./mongodb-compass_*_amd64.deb
-          mongo -version
+          mongod -version
           echo 'I have installed MongoDB.'
           echo 'https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/'
           ;;
@@ -265,6 +272,7 @@
           # 最新版が必要な場合は事前に変更しておくこと 
           wget https://mirror.kakao.com/eclipse/oomph/epp/2023-12/R/eclipse-inst-jre-linux64.tar.gz
           tar -xvf eclipse-inst-jre-linux64.tar.gz 
+          # tar: 未知の拡張ヘッダキーワード 'LIBARCHIVE.creationtime' を無視
           ./eclipse-installer/eclipse-inst
           cd
           echo 'I have installed Eclipse.'
@@ -277,14 +285,21 @@
           wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.21/android-studio-2022.3.1.21-linux.tar.gz
           tar -xvf android-studio-*-linux.tar.gz
           sh ./android-studio/bin/studio.sh
+          # Startup Error
+          # Unable to detect graphics environment
           echo 'I have installed Android Studio.'
           echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
           ;;
         "V1" )
-          apt -y install qemu-kvm libvirt-daemon-system libvirt-daemon virtinst bridge-utils libosinfo-bin
-          apt -y install virt-manager qemu-system
-          lsmod | grep kvm 
-          echo 'I have installed KVM.'
+          $vm = `cat /proc/cpuinfo | grep -e vmx -e svm | wc -l`
+          echo "VM Count $vm"
+          if [ "$vm" -gt 0 ]; then
+            echo 'KVM cannot be installed because the CPU does not support virtualization.'
+          else
+            apt -y install qemu-kvm libvirt-daemon-system libvirt-daemon virtinst bridge-utils libosinfo-bin
+            lsmod | grep kvm
+            echo 'I have installed KVM.'
+          fi
           echo 'https://www.server-world.info/query?os=Debian_12&p=kvm'
           ;;
         "V2" )
@@ -302,6 +317,25 @@
           docker run hello-world
           echo 'I have installed Docker Engine.'
           echo 'https://docs.docker.com/engine/install/debian/'
+          ;;
+        "T1" )
+          # 最新版が必要な場合は事前に変更しておくこと 
+          wget 'https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community_8.0.34-1ubuntu23.04_amd64.deb'
+          apt -y install ./mysql-workbench-community_*_amd64.deb
+          echo 'I have installed MySQL Workbench.'
+          echo 'https://www.mysql.com/jp/products/workbench/'
+          ;;
+        "T2" )
+          # 最新版が必要な場合は事前に変更しておくこと 
+          wget https://downloads.mongodb.com/compass/mongodb-compass_1.41.0_amd64.deb
+          apt -y install ./mongodb-compass_*_amd64.deb
+          echo 'I have installed MongoDB Compass.'
+          echo 'https://www.mongodb.com/products/tools/compass'
+          ;;
+        "T3" )
+          apt -y install virt-manager qemu-system
+          echo 'I have installed Virtual Machine Manager.'
+          echo 'https://www.server-world.info/query?os=Debian_12&p=kvm&f=3'
           ;;
       esac
     fi
