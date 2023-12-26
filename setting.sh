@@ -41,7 +41,6 @@
   if [[ "$str" =~ ^[yY]$ ]]; then
     apt -y install task-japanese locales-all
     localectl set-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
-    source /etc/default/locale 
     date
     echo 'Japanese locale settings have been implemented.'
   else
@@ -96,7 +95,10 @@
     apt -y install git etckeeper
     etckeeper init
     etckeeper commit "1st commit"
+    apt -y install fonts-ipafont fonts-ipafont-gothic fonts-ipafont-mincho 
     apt -y install fonts-noto-cjk fonts-noto-cjk-extra
+    apt -y install snapd
+    snap install core
     echo 'We have installed CUI software.'
   else
     echo 'I skipped installing the CUI software.'
@@ -112,10 +114,12 @@
     "1" )
       echo 'If communication is interrupted, REBOOT.'
       apt -y install task-lxde-desktop fcitx-mozc && \
-        systemctl stop systemd-networkd.service && \
-        systemctl restart connman.service && \
-        systemctl disable systemd-networkd.service 
-        # 何故かネットワークが切れるのでnetworkdを止める
+        systemctl stop connman.service && \
+        systemctl stop connman-wait-online.service
+        systemctl restart systemd-networkd.service && \
+        systemctl disable connman.service && \
+        systemctl disable connman-wait-online.service
+        # 何故かネットワークが切れるのでconnmanを止める
       echo 'I installed LXDE.'
       ;;
     "2" )
@@ -168,17 +172,17 @@
     echo 'Please select the DEVELOPMENT environment to install.'
     echo 'P1：PG JAVA OpenJDK  ('`which javac`')'
     echo 'P2：PG JAVA Maven  ('`which mvn`')'
-    echo 'P3：PG JAVA Gradle  ('`which gradle`')'
+    echo 'P3：PG JAVA Gradle  ('`which /opt/gradle/gradle-*/bin/gradle`')'
     echo 'P4：PG NodeJS  ('`which node`')'
     echo 'D1：DB PostgreSQL  ('`which psql`')'
     echo 'D2：DB MySQL  ('`which mysql`')'
     echo 'D3：DB MariaDB  ('`which mysql`')'
     echo 'D4：DB SQLite3  ('`which sqlite3`')'
     echo 'D5：DB MongoDB  ('`which mongod`')'
-    echo 'I1：IDE(GUI) Eclipse'
-    echo 'I2：IDE(GUI) Android Studio'
     echo 'V1：VM KVM  ('`lsmod | grep kvm | head -1`')'
     echo 'V2：VM Docker Engine  ('`which docker`')'
+    echo 'I1：IDE(GUI) Eclipse'
+    echo 'I2：IDE(GUI) Android Studio'
     echo 'T1: TOOL(GUI) MySQL Workbench'
     echo 'T2: TOOL(GUI) MongoDB Compass'
     echo 'T3: TOOL(GUI) Virtual Machine Manager'
@@ -191,9 +195,7 @@
         "P1" )
           apt -y install default-jdk
           echo 'export JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")' >> /etc/bash.bashrc
-          echo 'export PATH=$PATH:$JAVA_HOME/bin' >> /etc/bash.bashrc
           echo 'export CLASSPATH=.:$JAVA_HOME/lib/' >> /etc/bash.bashrc 
-          source /etc/bash.bashrc
           java -version
           javac -version
           echo 'I have installed JAVA OpenJDK.'
@@ -208,10 +210,9 @@
           # 最新版が必要な場合は事前に変更しておくこと 
           wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
           mkdir /opt/gradle
-          unzip -d /opt/gradle ./gradle-8.5-bin.zip
+          unzip -d /opt/gradle ./gradle-*-bin.zip
           echo 'export PATH=$PATH:/opt/gradle/gradle-8.5/bin' >> /etc/bash.bashrc
-          source /etc/bash.bashrc
-          gradle -v
+          /opt/gradle/gradle-*/bin/gradle -v
           echo 'I have installed JAVA Gradle.'
           ;;
         "P4" )
@@ -269,28 +270,6 @@
           echo 'https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-debian/'
           echo 'https://medium.com/@arun0808rana/mongodb-installation-on-debian-12-8001d0dafb56'
           ;;
-        "I1" )
-          # 最新版が必要な場合は事前に変更しておくこと 
-          wget https://mirror.kakao.com/eclipse/oomph/epp/2023-12/R/eclipse-inst-jre-linux64.tar.gz
-          tar -xvf eclipse-inst-jre-linux64.tar.gz 
-          # tar: 未知の拡張ヘッダキーワード 'LIBARCHIVE.creationtime' を無視
-          ./eclipse-installer/eclipse-inst
-          cd
-          echo 'I have installed Eclipse.'
-          echo 'https://www.eclipse.org/downloads/packages/installer'
-          echo 'If you need to configure PLEIADES, please refer to the following.'
-          echo 'https://willbrains.jp/'
-          ;;
-        "I2" )
-          # 最新版が必要な場合は事前に変更しておくこと 
-          wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.21/android-studio-2022.3.1.21-linux.tar.gz
-          tar -xvf android-studio-*-linux.tar.gz
-          sh ./android-studio/bin/studio.sh
-          # Startup Error
-          # Unable to detect graphics environment
-          echo 'I have installed Android Studio.'
-          echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
-          ;;
         "V1" )
           vm=`cat /proc/cpuinfo | grep -e vmx -e svm | wc -l`
           echo "VM Count $vm"
@@ -318,12 +297,33 @@
           echo 'I have installed Docker Engine.'
           echo 'https://docs.docker.com/engine/install/debian/'
           ;;
-        "T1" )
+        "I1" )
           # 最新版が必要な場合は事前に変更しておくこと 
-          wget 'https://dev.mysql.com/get/Downloads/MySQLGUITools/mysql-workbench-community_8.0.34-1ubuntu23.04_amd64.deb'
-          apt -y install ./mysql-workbench-community_*_amd64.deb
+          wget https://mirror.kakao.com/eclipse/oomph/epp/2023-12/R/eclipse-inst-jre-linux64.tar.gz
+          tar -xvf eclipse-inst-jre-linux64.tar.gz 
+          # tar: 未知の拡張ヘッダキーワード 'LIBARCHIVE.creationtime' を無視
+          ./eclipse-installer/eclipse-inst
+          cd
+          echo 'I have installed Eclipse.'
+          echo 'https://www.eclipse.org/downloads/packages/installer'
+          echo 'If you need to configure PLEIADES, please refer to the following.'
+          echo 'https://willbrains.jp/'
+          ;;
+        "I2" )
+          # 最新版が必要な場合は事前に変更しておくこと 
+          wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/2022.3.1.21/android-studio-2022.3.1.21-linux.tar.gz
+          tar -xvf android-studio-*-linux.tar.gz
+          sh ./android-studio/bin/studio.sh
+          # Startup Error
+          # Unable to detect graphics environment
+          echo 'I have installed Android Studio.'
+          echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
+          ;;
+        "T1" )
+          snap -y install mysql-workbench-community
           echo 'I have installed MySQL Workbench.'
           echo 'https://www.mysql.com/jp/products/workbench/'
+          echo 'https://snapcraft.io/install/mysql-workbench-community/debian'
           ;;
         "T2" )
           # 最新版が必要な場合は事前に変更しておくこと 
