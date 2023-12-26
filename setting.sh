@@ -22,7 +22,6 @@
   fi
 
 # 日本時間設定
-
   echo 'Do you want to set JAPAN TIME? [Y/n]'
   read str
   if [[ "$str" =~ ^[yY]$ ]]; then
@@ -97,6 +96,7 @@
     etckeeper commit "1st commit"
     apt -y install fonts-ipafont fonts-ipafont-gothic fonts-ipafont-mincho 
     apt -y install fonts-noto-cjk fonts-noto-cjk-extra
+    apt -y install manpages-ja manpages-ja-dev 
     apt -y install snapd
     snap install core
     echo 'We have installed CUI software.'
@@ -106,14 +106,43 @@
 
 # GUIデスクトップのインストール
   echo 'Select the GUI DESKTOP to install. (Otherwise skip installation)'
-  echo '1: LXDE'
-  echo '2: GNOME'
-  echo '3: MATE'
+  echo '1: GNOME'
+  echo '2: Xfce'
+  echo '3: GNOME Flashback'
+  echo '4: KDE Plasma'
+  echo '5: Cinnamon'
+  echo '6: MATE'
+  echo '7: LXDE'
+  echo '8: LXQt'
   read str
   case "$str" in
     "1" )
+      apt -y install task-gnome-desktop ibus-mozc
+      echo 'I installed GNOME.'
+      ;;
+    "2" )
+      apt -y install task-xfce-desktop ibus-mozc
+      echo 'I installed Xfce.'
+      ;;
+    "3" )
+      apt -y install task-gnome-flashback-desktop ibus-mozc 
+      echo 'I installed GNOME Flashback.'
+      ;;
+    "4" )
+      apt -y install task-kde-desktop ibus-mozc kde-i18n-ja
+      echo 'I installed KDE Plasma.'
+      ;;
+    "5" )
+      apt -y install task-cinnamon-desktop ibus-mozc 
+      echo 'I installed Cinnamon.'
+      ;;
+    "6" )
+      apt -y install task-mate-desktop ibus-mozc
+      echo 'I installed MATE.'
+      ;;
+    "7" )
       echo 'If communication is interrupted, REBOOT.'
-      apt -y install task-lxde-desktop fcitx-mozc && \
+      apt -y install task-lxde-desktop ibus-mozc && \
         systemctl stop connman.service && \
         systemctl stop connman-wait-online.service
         systemctl restart systemd-networkd.service && \
@@ -122,13 +151,9 @@
         # 何故かネットワークが切れるのでconnmanを止める
       echo 'I installed LXDE.'
       ;;
-    "2" )
-      apt -y install task-gnome-desktop
-      echo 'I installed GNOME.'
-      ;;
-    "3" )
-      apt -y install task-mate-desktop
-      echo 'I installed MATE.'
+    "8" )
+      apt -y install task-lxqt-desktop ibus-mozc
+      echo 'I installed LXQt.'
       ;;
     * )
       echo 'I skipped installing the GUI desktop.'
