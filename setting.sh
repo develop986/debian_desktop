@@ -320,7 +320,7 @@
           echo 'https://linux.how2shout.com/how-to-install-android-studio-on-debian-12-11-linux/'
           ;;
         "T1" )
-          snap -y install mysql-workbench-community
+          snap install mysql-workbench-community
           echo 'I have installed MySQL Workbench.'
           echo 'https://www.mysql.com/jp/products/workbench/'
           echo 'https://snapcraft.io/install/mysql-workbench-community/debian'
