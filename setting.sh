@@ -112,12 +112,10 @@
     "1" )
       echo 'If communication is interrupted, REBOOT.'
       apt -y install task-lxde-desktop fcitx-mozc && \
-        systemctl stop connman.service 
-        systemctl stop connman-wait-online.service 
-        systemctl restart systemd-networkd.service 
-        systemctl disable connman.service
-        systemctl disable connman-wait-online.service
-      # 何故かネットワークが切れるのでconnmanを止める
+        systemctl stop systemd-networkd.service && \
+        systemctl restart connman.service && \
+        systemctl disable systemd-networkd.service 
+        # 何故かネットワークが切れるのでnetworkdを止める
       echo 'I installed LXDE.'
       ;;
     "2" )
