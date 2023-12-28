@@ -97,6 +97,7 @@
     apt -y install fonts-ipafont fonts-ipafont-gothic fonts-ipafont-mincho 
     apt -y install fonts-noto-cjk fonts-noto-cjk-extra
     apt -y install manpages-ja manpages-ja-dev 
+    apt -y install ethtool iperf3 dstat
     apt -y install snapd
     snap install core
     echo 'We have installed CUI software.'
