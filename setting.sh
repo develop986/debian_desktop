@@ -249,7 +249,7 @@
           echo 'https://www.server-world.info/query?os=Debian_12&p=nodejs&f=1'
           ;;
         "D1" )
-          apt -y install postgresql
+          apt -y install postgresql postgresql-client postgresql-contrib postgresql-all
           psql --version
           echo 'I have installed PostgreSQL.'
           echo 'https://www.server-world.info/query?os=Debian_12&p=postgresql'
