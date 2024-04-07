@@ -250,9 +250,13 @@
           ;;
         "D1" )
           apt -y install postgresql postgresql-client postgresql-contrib postgresql-all
+          passwd postgres
+          systemctl restart postgresql
+          systemctl status postgresql
           psql --version
           echo 'I have installed PostgreSQL.'
           echo 'https://www.server-world.info/query?os=Debian_12&p=postgresql'
+          echo 'https://debimate.jp/2020/03/20/'
           ;;
         "D2" )
           # 最新版が必要な場合は事前に変更しておくこと 
